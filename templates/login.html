@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login | Clinikha</title>
+  <style>
+    body {
+      background: #f0f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #0077b6;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0077b6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005f91;
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Ingreso al sistema</h2>
+    <form id="loginForm">
+      <input type="email" id="correo" placeholder="Correo electrónico" required>
+      <input type="password" id="clave" placeholder="Contraseña" required>
+      <button type="submit">Iniciar Sesión</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const correo = document.getElementById("correo").value;
+      const clave = document.getElementById("clave").value;
+
+      const res = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo, clave })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Guardar en localStorage o sessionStorage si deseas
+        localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        window.location.href = "/menu";  // Redirige al menú principal
+      } else {
+        document.getElementById("errorMsg").textContent = data.error || "Error al iniciar sesión";
+      }
+    });
+  </script>
+</body>
+</html>

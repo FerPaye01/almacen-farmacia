@@ -1,0 +1,15 @@
+-- Insertar almacenes
+INSERT INTO almacenes (nombre, tipo, ubicacion) VALUES
+('Almacén Central', 'central', 'Edificio A'),
+('CAS Hospitalario', 'hospitalario', 'Edificio B');
+
+-- Insertar productos
+INSERT INTO productos (codigo_sap, nombre, tipo, unidad_medida, es_controlado)
+VALUES 
+('MED001', 'Paracetamol 500mg', 'medicamento', 'tablet', FALSE),
+('DISP001', 'Jeringa 10ml', 'dispositivo', 'unidad', FALSE);
+
+
+
+INSERT INTO usuarios (nombre, correo, clave, rol)
+VALUES ('Cristhian', 'admin@clinikha.com', 'admin123', 'admin');
