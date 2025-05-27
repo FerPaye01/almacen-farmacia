@@ -1,98 +1,419 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sistema de Gestión Hospitalaria</title>
-  <style>
-    /* Estilos base: los que ya tenías (omito para espacio) */
-    /* ... MANTÉN AQUÍ TODO TU CSS COMO YA LO TIENES ... */
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Gestión Hospitalaria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff; /* Example: blue */
+            --secondary-color: #6c757d; /* Example: gray */
+            --danger-color: #dc3545; /* Red for logout */
+            --background-light: #f8f9fa;
+            --text-dark: #343a40;
+            --border-light: #dee2e6;
+        }
 
-    .logout-button {
-      background-color: transparent;
-      color: #dc3545;
-      border: 1px solid #dc3545;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
 
-    .logout-button:hover {
-      background-color: #dc3545;
-      color: white;
-    }
-  </style>
+        /* Sidebar styles */
+        .sidebar {
+            width: 70px; /* Collapsed state for mobile */
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: width 0.3s ease;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar.expanded {
+            width: 250px; /* Expanded state for desktop */
+        }
+
+        .sidebar-icon {
+            padding: 15px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .sidebar-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-icon .tooltip {
+            visibility: hidden;
+            width: 120px;
+            background-color: var(--text-dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            left: 80px; /* Position to the right of the icon */
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .sidebar.expanded .sidebar-icon .tooltip {
+            display: none; /* Hide tooltips when sidebar is expanded */
+        }
+
+        .sidebar-icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Main content styles */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            margin-left: 70px; /* Compensate for collapsed sidebar */
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.sidebar-expanded {
+            margin-left: 250px; /* Compensate for expanded sidebar */
+        }
+
+        /* Header styles */
+        .header {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            width: 100%; /* Full width on mobile */
+            margin-bottom: 10px; /* Space between search and user on mobile */
+        }
+
+        .hamburger {
+            font-size: 1.8rem;
+            cursor: pointer;
+            margin-right: 15px;
+            display: block; /* Always visible to toggle sidebar */
+            color: var(--text-dark);
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+        .search-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .search-button:hover {
+            opacity: 0.9;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%; /* Full width on mobile */
+            justify-content: flex-end; /* Align to the right */
+        }
+
+        .settings-icon,
+        .notification-icon {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        #nombreUsuario {
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .logout-button {
+            background-color: transparent;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        .logout-button:hover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* Title and buttons section */
+        .title-section {
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .module-button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            flex: 1 1 auto; /* Allow buttons to grow and shrink */
+            min-width: 120px; /* Minimum width for buttons */
+        }
+
+        .module-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* Card container (example) */
+        .card-container {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Banner styles */
+        .banner {
+            width: 100%;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .banner-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Image from prompt (placed as content, not background) */
+        .image-container {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .sidebar {
+                width: 250px; /* Sidebar expanded by default on larger screens */
+            }
+
+            .main-content {
+                margin-left: 250px; /* Adjust main content margin for expanded sidebar */
+            }
+
+            .hamburger {
+                display: none; /* Hide hamburger on larger screens if sidebar is always visible */
+            }
+
+            .header {
+                flex-wrap: nowrap; /* Prevent wrapping for header elements */
+            }
+
+            .search-bar {
+                width: auto;
+                margin-bottom: 0;
+            }
+
+            .user-section {
+                width: auto;
+            }
+
+            .main-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <!-- ... Todos los iconos de tu menú ... -->
-    <!-- No modifiques nada aquí si ya funcionan los enlaces -->
-  </div>
-
-  <!-- Contenido principal -->
-  <div class="main-content">
-    <!-- Header -->
-    <div class="header">
-      <div class="search-bar">
-        <div class="hamburger">|||</div>
-        <input type="text" class="search-input" placeholder="Escribe aquí..." />
-        <button class="search-button">Buscar</button>
-      </div>
-      <div class="user-section">
-        <svg class="settings-icon" ... ></svg>
-        <svg class="notification-icon" ... ></svg>
-        <img src="user.jpeg" alt="User Avatar" class="user-avatar" />
-        <span id="nombreUsuario">Usuario</span>
-        <button class="logout-button" onclick="cerrarSesion()">Cerrar sesión</button>
-      </div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-icon" data-tooltip="Dashboard">
+            <i class="fas fa-chart-line"></i>
+            <span class="tooltip">Dashboard</span>
+        </div>
+        <div class="sidebar-icon" data-tooltip="Pacientes">
+            <i class="fas fa-user-injured"></i>
+            <span class="tooltip">Pacientes</span>
+        </div>
+        <div class="sidebar-icon" data-tooltip="Citas">
+            <i class="fas fa-calendar-alt"></i>
+            <span class="tooltip">Citas</span>
+        </div>
+        <div class="sidebar-icon" data-tooltip="Laboratorio">
+            <i class="fas fa-microscope"></i>
+            <span class="tooltip">Laboratorio</span>
+        </div>
+        <div class="sidebar-icon" data-tooltip="Farmacia">
+            <i class="fas fa-pills"></i>
+            <span class="tooltip">Farmacia</span>
+        </div>
+        <div class="sidebar-icon" data-tooltip="Inventarios">
+            <i class="fas fa-boxes"></i>
+            <span class="tooltip">Inventarios</span>
+        </div>
+        <div class="sidebar-icon" data-tooltip="Facturación">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span class="tooltip">Facturación</span>
+        </div>
+        <div class="sidebar-icon" data-tooltip="Reportes">
+            <i class="fas fa-chart-pie"></i>
+            <span class="tooltip">Reportes</span>
+        </div>
+        <div class="sidebar-icon" data-tooltip="Administración">
+            <i class="fas fa-cog"></i>
+            <span class="tooltip">Administración</span>
+        </div>
     </div>
 
-    <!-- Título principal y botones -->
-    <div class="title-section">
-      <h1 class="main-title">Laboratorio, farmacia e inventarios</h1>
-      <div class="button-container">
-        <button class="module-button">Laboratorio</button>
-        <button class="module-button">Farmacia</button>
-        <button class="module-button">Inventarios</button>
-      </div>
+    <div class="main-content" id="mainContent">
+        <div class="header">
+            <div class="search-bar">
+                <div class="hamburger" id="hamburger">|||</div>
+                <input type="text" class="search-input" placeholder="Escribe aquí..." />
+                <button class="search-button">Buscar</button>
+            </div>
+            <div class="user-section">
+                <i class="fas fa-cog settings-icon"></i>
+                <i class="fas fa-bell notification-icon"></i>
+                <img src="/static/img/user.jpeg" alt="User Avatar" class="user-avatar" />
+                <span id="nombreUsuario">Usuario</span>
+                <button class="logout-button" onclick="cerrarSesion()">Cerrar sesión</button>
+            </div>
+        </div>
+
+        <div class="title-section">
+            <h1 class="main-title">Laboratorio, farmacia e inventarios</h1>
+            <div class="button-container">
+                <button class="module-button">Laboratorio</button>
+                <button class="module-button">Farmacia</button>
+                <button class="module-button">Inventarios</button>
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="image_eeb372.png" alt="Cute white puppy in grass">
+        </div>
+
+        <div class="card-container">
+            <div class="card">
+                <h3>Resumen Laboratorio</h3>
+                <p>Últimos resultados de pruebas.</p>
+                </div>
+            <div class="card">
+                <h3>Estado Farmacia</h3>
+                <p>Nivel de stock de medicamentos.</p>
+                </div>
+            <div class="card">
+                <h3>Inventario General</h3>
+                <p>Reporte de artículos en almacén.</p>
+                </div>
+        </div>
+
+        <div class="banner">
+            <img src="https://via.placeholder.com/1200x200" alt="Medicamentos" class="banner-image" />
+        </div>
     </div>
 
-    <!-- Tarjetas (tu contenido visual) -->
-    <div class="card-container">
-      <!-- ... tus tarjetas ... -->
-    </div>
+    <script>
+        // Toggle sidebar
+        document.getElementById('hamburger').addEventListener('click', function () {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            sidebar.classList.toggle('expanded');
+            mainContent.classList.toggle('sidebar-expanded');
+        });
 
-    <!-- Banner inferior -->
-    <div class="banner">
-      <img src="imagen4.png" alt="Medicamentos" class="banner-image" />
-    </div>
-  </div>
+        // Cargar nombre de usuario desde localStorage
+        const usuario = JSON.parse(localStorage.getItem("usuario"));
+        if (usuario) {
+            document.getElementById("nombreUsuario").textContent = usuario.nombre;
+        } else {
+            // Si no hay sesión, redirigir al login
+            window.location.href = "/login";
+        }
 
-  <!-- Scripts -->
-  <script>
-    // Mostrar tooltip
-    document.querySelectorAll('.sidebar-icon').forEach(icon => {
-      icon.addEventListener('mouseenter', function () {
-        console.log('Mostrando tooltip: ' + this.getAttribute('data-tooltip'));
-      });
-    });
-
-    // Cargar nombre de usuario desde localStorage
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
-    if (usuario) {
-      document.getElementById("nombreUsuario").textContent = usuario.nombre;
-    } else {
-      // Si no hay sesión, redirigir al login
-      window.location.href = "/login";
-    }
-
-    // Cerrar sesión
-    function cerrarSesion() {
-      localStorage.clear();
-      window.location.href = "/login";
-    }
-  </script>
+        // Cerrar sesión
+        function cerrarSesion() {
+            localStorage.clear();
+            window.location.href = "/login";
+        }
+    </script>
 </body>
 </html>
