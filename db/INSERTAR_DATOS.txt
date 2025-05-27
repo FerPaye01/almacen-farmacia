@@ -11,5 +11,5 @@ VALUES
 
 
 
-INSERT INTO usuarios (nombre, correo, clave, rol)
-VALUES ('Cristhian', 'admin@clinikha.com', 'admin123', 'admin');
+    INSERT INTO usuarios (nombre, correo, clave, rol)
+    VALUES ('Cristhian', 'admin@clinikha.com', 'admin123', 'admin');
