@@ -303,46 +303,72 @@
     </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-    <a href="/dashboard" class="sidebar-icon" data-tooltip="Dashboard">
-        <i class="fas fa-chart-line"></i>
-        <span class="tooltip">Dashboard</span>
-    </a>
-    <a href="/pacientes" class="sidebar-icon" data-tooltip="Pacientes">
-        <i class="fas fa-user-injured"></i>
-        <span class="tooltip">Pacientes</span>
-    </a>
-    <a href="/citas" class="sidebar-icon" data-tooltip="Citas">
-        <i class="fas fa-calendar-alt"></i>
-        <span class="tooltip">Citas</span>
-    </a>
-    <a href="/laboratorio" class="sidebar-icon" data-tooltip="Laboratorio">
-        <i class="fas fa-microscope"></i>
-        <span class="tooltip">Laboratorio</span>
-    </a>
-    <a href="/farmacia" class="sidebar-icon" data-tooltip="Farmacia">
-        <i class="fas fa-pills"></i>
-        <span class="tooltip">Farmacia</span>
-    </a>
-    <a href="/inventarios" class="sidebar-icon" data-tooltip="Inventarios">
-        <i class="fas fa-boxes"></i>
-        <span class="tooltip">Inventarios</span>
-    </a>
-    <a href="/facturacion" class="sidebar-icon" data-tooltip="Facturación">
-        <i class="fas fa-file-invoice-dollar"></i>
-        <span class="tooltip">Facturación</span>
-    </a>
-    <a href="/reportes" class="sidebar-icon" data-tooltip="Reportes">
-        <i class="fas fa-chart-pie"></i>
-        <span class="tooltip">Reportes</span>
-    </a>
-    <a href="/administracion" class="sidebar-icon" data-tooltip="Administración">
-        <i class="fas fa-cog"></i>
-        <span class="tooltip">Administración</span>
-    </a>
-    <a href="/abastecimiento-transferencia-cas" class="sidebar-icon" data-tooltip="Abastecimiento por Transferencia entre CAS">
-
-</div>
+    <div class="sidebar">
+        <div class="sidebar-icon" data-tooltip="Ayuda y Soporte">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        </div>
+        <a href="index" class="sidebar-icon" data-tooltip="Inicio">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </a>
+        <a href="gestion_stocks" class="sidebar-icon" data-tooltip="Gestión de Stocks">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3h18v8H3z"/><path d="M3 13h18v8H3z"/>
+            </svg>
+          </a>
+          <a href="abastecimiento_central" class="sidebar-icon" data-tooltip="Abastecimiento por Almacén Central">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-6 9 6v11H3z"/><path d="M9 22V12h6v10"/>
+            </svg>
+          </a>
+          <a href="abastecimiento_transferencia_cas" class="sidebar-icon" data-tooltip="Abastecimiento por Transferencia entre CAS">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="17 1 21 5 17 9"/>
+              <path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
+              <polyline points="7 23 3 19 7 15"/>
+              <path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+            </svg>
+          </a>
+          <a href="almacenamiento_productos" class="sidebar-icon" data-tooltip="Almacenamiento de Productos">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8l-9-5-9 5v8l9 5 9-5z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </a>
+          <a href="gestion_estupefacientes" class="sidebar-icon" data-tooltip="Gestión de Estupefacientes">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="10" width="20" height="4" rx="2"/>
+              <line x1="12" y1="2" x2="12" y2="22"/>
+            </svg>
+          </a>
+          <a href="control_stocks" class="sidebar-icon" data-tooltip="Control de Stocks">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/>
+            </svg>
+          </a>
+          <a href="manejo_productos_inmovilizados_vencidos" class="sidebar-icon" data-tooltip="Manejo de Productos Inmovilizados/Vencidos">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </a>
+          <a href="control_temperatura_humedad" class="sidebar-icon" data-tooltip="Control de Temperatura y Humedad">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="14" y1="2" x2="14" y2="8"/>
+              <path d="M8 6h12a4 4 0 0 1 0 8h-1"/>
+              <path d="M6 10a4 4 0 0 0 0 8v2"/>
+              <path d="M6 2a4 4 0 0 0 0 8"/>
+            </svg>
+          </a>
+          <a href="devolucion_almacen_especializado" class="sidebar-icon" data-tooltip="Devolución a Almacén Especializado">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 11 4 16 9 21"/>
+              <path d="M20 4v7a4 4 0 0 1-4 4H4"/>
+            </svg>
+          </a>
+      
+    </div>
 
 
     <div class="main-content" id="mainContent">

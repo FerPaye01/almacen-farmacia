@@ -2,181 +2,49 @@
 <html lang="es">
 <head>
     <title>Transferencias entre CAS</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+
     <style>
-         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        
-        body {
-            background-color: #f0f7fb;
-            height: 100vh;
-            display: flex;
-        }
-        
-        .sidebar {
-            width: 80px;
-            background-color: #0077b6;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20px;
-            position: relative;
-        }
-        .sidebar-icon {
-            width: 40px;
-            height: 40px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-        
-        .sidebar-icon:hover {
-            transform: scale(1.2);
-        }
-        
-        .sidebar-icon:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            left: 55px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            white-space: nowrap;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        .main-content {
-            flex: 1;
-            padding: 20px;
-        }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .search-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .hamburger {
-            font-size: 22px;
-            cursor: pointer;
-        }
-        
-        .search-input {
-            width: 400px;
-            padding: 8px 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        
-        .search-button {
-            background-color: #0077b6;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .settings-icon, .notification-icon {
-            cursor: pointer;
-            font-size: 20px;
-            color: #666;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
-        .menu-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 24px;
-        }
-        
-        .title-section {
-            margin-bottom: 20px;
-        }
-        
-        .main-title {
-            color: #0077b6;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .button-container {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
+       
         .module-button {
-            background-color: #0077b6;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
-        
+        .module-button:hover {
+            background-color: #005f8f;
+            transform: translateY(-2px);
+        }
+        .module-button.active {
+            background-color: #004d7a;
+            border-bottom: 3px solid white; /* Indicate active state */
+        }
+        .module-button.full-width {
+            width: 100%;
+            margin-top: 20px;
+        }
+
         .card-container {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
-        
+
         .card {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px var(--shadow-color);
             height: 300px;
             display: flex;
         }
-        
+
         .card-left {
             width: 50%;
             padding: 20px;
@@ -184,33 +52,33 @@
             flex-direction: column;
             justify-content: center;
         }
-        
+
         .card-right {
             width: 50%;
             overflow: hidden;
         }
-        
+
         .card-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         .card-text {
             font-size: 16px;
-            color: #666;
+            color: var(--light-text-color);
             line-height: 1.5;
         }
-        
+
         .banner {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px var(--shadow-color);
             height: 150px;
             width: 100%;
         }
-        
+
         .banner-image {
             width: 100%;
             height: 100%;
@@ -218,91 +86,280 @@
         }
         .transfer-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1.5fr; /* Adjusted for better content balance */
             gap: 30px;
             margin-top: 25px;
         }
-        
+
         .transfer-map {
-            background: white;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 20px;
             height: 600px;
             position: relative;
+            background-image: url('image_e83387.png'); /* Placeholder for map image */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-        
+
         .warehouse-selector {
             display: grid;
             grid-template-columns: 1fr 50px 1fr;
             align-items: center;
             margin: 20px 0;
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px var(--shadow-color);
         }
-        
+
         .transfer-arrow {
             text-align: center;
             font-size: 24px;
-            color: #0077b6;
+            color: var(--primary-color);
+            font-weight: bold;
         }
-        
+
         .transfer-products {
-            background: #f8f9fa;
+            background: #f8f9fa; /* Lighter background for product list */
             border-radius: 12px;
             padding: 20px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.05); /* subtle inner shadow */
         }
-        
+
+        .product-transfer-header {
+            display: grid;
+            grid-template-columns: 1fr 100px 120px;
+            font-weight: bold;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
         .product-transfer-item {
             display: grid;
             grid-template-columns: 1fr 100px 120px;
             align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
         }
-        
+        .product-transfer-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-info span {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
         .stock-validation {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9em;
+            gap: 8px;
+            font-size: 0.85em;
+            color: var(--light-text-color);
+            margin-top: 5px;
         }
-        
+
         .validation-icon {
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
+            flex-shrink: 0; /* Prevent shrinking */
         }
-        
+
         .valid {
-            background: #28a745;
+            background: var(--success-color);
         }
-        
+
         .invalid {
-            background: #dc3545;
+            background: var(--danger-color);
         }
-        
+
+        .form-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1em;
+            color: var(--text-color);
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 119, 182, 0.2);
+        }
+        .form-input.error {
+            border-color: var(--danger-color);
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+        }
+
+        .transfer-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .btn-remove {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            color: var(--danger-color);
+            transition: transform 0.2s ease;
+        }
+        .btn-remove:hover {
+            transform: scale(1.2);
+        }
+
+
         .transfer-timeline {
             margin-top: 25px;
             padding: 15px;
-            background: white;
+            background: var(--card-bg);
             border-radius: 12px;
+            box-shadow: 0 2px 10px var(--shadow-color);
         }
-        
+        .transfer-timeline h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
         .timeline-step {
             display: flex;
             align-items: center;
             gap: 15px;
             padding: 10px;
-            border-left: 3px solid #0077b6;
+            border-left: 3px solid #ddd; /* Light border for inactive */
             margin: 10px 0;
+            position: relative;
+            font-size: 0.95em;
+            color: var(--light-text-color);
         }
-        
+        .timeline-step.completed {
+            border-left-color: var(--success-color);
+        }
+        .timeline-step.current {
+            border-left-color: var(--warning-color);
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .timeline-status {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #ddd; /* Default inactive */
+            flex-shrink: 0;
+        }
+        .timeline-step.completed .timeline-status {
+            background-color: var(--success-color);
+        }
+        .timeline-step.current .timeline-status {
+            background-color: var(--warning-color);
+            border: 2px solid var(--primary-color);
+        }
+
         .map-marker {
             position: absolute;
             width: 30px;
             height: 30px;
-            background: #0077b6;
+            background: var(--primary-color);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             cursor: pointer;
+            box-shadow: 0 0 0 4px rgba(0, 119, 182, 0.4); /* Halo effect */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+        .map-marker:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 0 6px rgba(0, 119, 182, 0.6);
+        }
+        /* Style for the currently selected marker */
+        .map-marker.selected {
+            background-color: var(--success-color);
+            box-shadow: 0 0 0 6px rgba(40, 167, 69, 0.6);
+        }
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .transfer-container {
+                grid-template-columns: 1fr; /* Stack columns on smaller screens */
+            }
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px; /* Smaller sidebar */
+            }
+            .sidebar-icon {
+                width: 35px;
+                height: 35px;
+            }
+            .main-content {
+                padding: 15px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .search-bar {
+                width: 100%;
+            }
+            .user-section {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .module-button {
+                width: 100%;
+            }
+            .warehouse-selector, .product-transfer-header, .product-transfer-item {
+                grid-template-columns: 1fr; /* Stack elements in warehouse selector and product list */
+                gap: 10px;
+            }
+            .transfer-arrow {
+                display: none; /* Hide arrow on small screens */
+            }
+            .product-info {
+                margin-bottom: 5px;
+            }
+            .transfer-actions {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 20px;
+            }
+            .search-input {
+                padding: 6px 10px;
+            }
+            .search-button {
+                padding: 6px 10px;
+            }
         }
     </style>
 </head>
@@ -371,7 +428,7 @@
               <path d="M20 4v7a4 4 0 0 1-4 4H4"/>
             </svg>
           </a>
-      
+
     </div>
     <div class="main-content">
         <div class="header">
@@ -391,34 +448,35 @@
         <div class="title-section">
             <h1 class="main-title">Transferencia entre CAS</h1>
             <div class="button-container">
-                <button class="module-button active" onclick="showSection('new')">Nueva Transferencia</button>
-                <button class="module-button" onclick="showSection('track')">En Progreso</button>
-                <button class="module-button" onclick="showSection('history')">Histórico</button>
+                <button class="module-button active" id="newTransferBtn" onclick="showSection('new')">Nueva Transferencia</button>
+                <button class="module-button" id="inProgressBtn" onclick="showSection('track')">En Progreso</button>
+                <button class="module-button" id="historyBtn" onclick="showSection('history')">Histórico</button>
             </div>
         </div>
 
-        <div class="transfer-container">
-            <!-- Mapa interactivo -->
+        <div class="transfer-container" id="newTransferSection">
             <div class="transfer-map" id="warehouse-map">
-                <div class="map-marker" style="top: 30%; left: 25%" data-almacen="1"></div>
-                <div class="map-marker" style="top: 60%; left: 70%" data-almacen="2"></div>
+                <div class="map-marker" style="top: 30%; left: 25%" data-almacen="1">CAS A</div>
+                <div class="map-marker" style="top: 60%; left: 70%" data-almacen="2">CAS B</div>
+                <div class="map-marker" style="top: 45%; left: 50%" data-almacen="3">CAS C</div>
             </div>
 
-            <!-- Controles de transferencia -->
             <div class="transfer-controls">
                 <div class="warehouse-selector">
                     <select class="form-input" id="almacen-origen" required>
                         <option value="">Seleccionar origen</option>
-                        <?php foreach($almacenes as $a): ?>
-                        <option value="<?= $a['almacen_id'] ?>"><?= $a['nombre'] ?></option>
-                        <?php endforeach ?>
+                        <option value="1">Almacén Central</option>
+                        <option value="2">CAS Arequipa</option>
+                        <option value="3">CAS Cusco</option>
+                        <option value="4">CAS Lima</option>
                     </select>
                     <div class="transfer-arrow">→</div>
                     <select class="form-input" id="almacen-destino" required>
                         <option value="">Seleccionar destino</option>
-                        <?php foreach($almacenes as $a): ?>
-                        <option value="<?= $a['almacen_id'] ?>"><?= $a['nombre'] ?></option>
-                        <?php endforeach ?>
+                        <option value="1">Almacén Central</option>
+                        <option value="2">CAS Arequipa</option>
+                        <option value="3">CAS Cusco</option>
+                        <option value="4">CAS Lima</option>
                     </select>
                 </div>
 
@@ -426,132 +484,340 @@
                     <div class="product-transfer-header">
                         <span>Producto</span>
                         <span>Cantidad</span>
-                        <span>Disponibilidad</span>
+                        <span>Acciones</span>
                     </div>
-                    
-                    <div class="product-transfer-item">
+
+                    <div class="product-transfer-item" data-product-id="1">
                         <div class="product-info">
                             <span>Paracetamol 500mg</span>
                             <div class="stock-validation">
                                 <div class="validation-icon valid"></div>
-                                <span>Disponible: 150</span>
+                                <span>Disponible: <span class="available-stock">150</span></span>
                             </div>
                         </div>
-                        <input type="number" class="form-input" value="50" min="1" max="150">
+                        <input type="number" class="form-input quantity-input" value="50" min="1">
                         <div class="transfer-actions">
                             <button class="btn-remove">❌</button>
                         </div>
                     </div>
-                    
+
+                    <div class="product-transfer-item" data-product-id="2">
+                        <div class="product-info">
+                            <span>Ibuprofeno 400mg</span>
+                            <div class="stock-validation">
+                                <div class="validation-icon valid"></div>
+                                <span>Disponible: <span class="available-stock">80</span></span>
+                            </div>
+                        </div>
+                        <input type="number" class="form-input quantity-input" value="30" min="1">
+                        <div class="transfer-actions">
+                            <button class="btn-remove">❌</button>
+                        </div>
+                    </div>
+
+                    <div class="product-transfer-item" data-product-id="3">
+                        <div class="product-info">
+                            <span>Amoxicilina 250mg</span>
+                            <div class="stock-validation">
+                                <div class="validation-icon invalid"></div>
+                                <span>Disponible: <span class="available-stock">0</span></span>
+                            </div>
+                        </div>
+                        <input type="number" class="form-input quantity-input" value="10" min="1">
+                        <div class="transfer-actions">
+                            <button class="btn-remove">❌</button>
+                        </div>
+                    </div>
+
                     <button class="module-button full-width" onclick="addProduct()">+ Añadir Producto</button>
                 </div>
 
                 <div class="transfer-timeline">
                     <h4>Progreso de Transferencia</h4>
-                    <div class="timeline-step">
+                    <div class="timeline-step completed">
                         <div class="timeline-status"></div>
                         <span>1. Solicitud creada</span>
                         <small>Hace 15min</small>
                     </div>
-                    <div class="timeline-step">
-                        <div class="timeline-status pending"></div>
+                    <div class="timeline-step current">
+                        <div class="timeline-status"></div>
                         <span>2. Aprobación requerida</span>
+                        <small>Pendiente</small>
                     </div>
                     <div class="timeline-step">
                         <div class="timeline-status"></div>
                         <span>3. En transporte</span>
+                        <small>Estimado: 24h</small>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-status"></div>
+                        <span>4. Entregado</span>
+                        <small>---</small>
                     </div>
                 </div>
 
-                <button class="module-button" onclick="initiateTransfer()">Iniciar Transferencia</button>
+                <button class="module-button full-width" onclick="initiateTransfer()">Iniciar Transferencia</button>
             </div>
         </div>
+
+        <div id="trackSection" style="display: none;">
+            <p>Aquí se mostrarán las transferencias en progreso.</p>
+            </div>
+
+        <div id="historySection" style="display: none;">
+            <p>Aquí se mostrará el histórico de transferencias.</p>
+            </div>
+
     </div>
 
     <script>
-        // Gestión del mapa interactivo
+        // Dummy data for demonstration
+        const warehouses = [
+            { id: 1, name: 'Almacén Central', products: [{id: 1, name: 'Paracetamol 500mg', stock: 200}, {id: 2, name: 'Ibuprofeno 400mg', stock: 120}, {id: 3, name: 'Amoxicilina 250mg', stock: 50}] },
+            { id: 2, name: 'CAS Arequipa', products: [{id: 1, name: 'Paracetamol 500mg', stock: 150}, {id: 2, name: 'Ibuprofeno 400mg', stock: 80}, {id: 3, name: 'Amoxicilina 250mg', stock: 0}] },
+            { id: 3, name: 'CAS Cusco', products: [{id: 1, name: 'Paracetamol 500mg', stock: 90}, {id: 2, name: 'Ibuprofeno 400mg', stock: 200}, {id: 3, name: 'Amoxicilina 250mg', stock: 75}] },
+            { id: 4, name: 'CAS Lima', products: [{id: 1, name: 'Paracetamol 500mg', stock: 300}, {id: 2, name: 'Ibuprofeno 400mg', stock: 100}, {id: 3, name: 'Amoxicilina 250mg', stock: 110}] }
+        ];
+
+        let currentStep = 1; // For timeline
+
+        // Show/Hide Sections
+        function showSection(sectionId) {
+            document.getElementById('newTransferSection').style.display = 'none';
+            document.getElementById('trackSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
+
+            document.getElementById('newTransferBtn').classList.remove('active');
+            document.getElementById('inProgressBtn').classList.remove('active');
+            document.getElementById('historyBtn').classList.remove('active');
+
+            if (sectionId === 'new') {
+                document.getElementById('newTransferSection').style.display = 'grid';
+                document.getElementById('newTransferBtn').classList.add('active');
+            } else if (sectionId === 'track') {
+                document.getElementById('trackSection').style.display = 'block';
+                document.getElementById('inProgressBtn').classList.add('active');
+            } else if (sectionId === 'history') {
+                document.getElementById('historySection').style.display = 'block';
+                document.getElementById('historyBtn').classList.add('active');
+            }
+        }
+
+        // Initialize with 'new' section shown
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('new');
+            updateMapMarkers();
+            updateStockDisponible(); // Initial stock update
+        });
+
+        // Map marker click event
         document.querySelectorAll('.map-marker').forEach(marker => {
             marker.addEventListener('click', function() {
                 const almacenId = this.dataset.almacen;
                 document.getElementById('almacen-origen').value = almacenId;
                 updateStockDisponible();
+                updateMapMarkers(almacenId); // Highlight selected marker
             });
         });
 
-        // Actualización dinámica de stock
-        async function updateStockDisponible() {
-            const origen = document.getElementById('almacen-origen').value;
-            const productos = await fetchStock(origen);
-            
-            document.querySelectorAll('.product-transfer-item').forEach(item => {
-                const productId = item.dataset.productId;
-                const stock = productos.find(p => p.id == productId)?.stock || 0;
-                const validation = item.querySelector('.stock-validation');
-                
-                validation.innerHTML = `
-                    <div class="validation-icon ${stock > 0 ? 'valid' : 'invalid'}"></div>
-                    <span>Disponible: ${stock}</span>
-                `;
+        // Update map markers visually
+        function updateMapMarkers(selectedId = null) {
+            document.querySelectorAll('.map-marker').forEach(marker => {
+                marker.classList.remove('selected');
+                if (selectedId && marker.dataset.almacen === selectedId) {
+                    marker.classList.add('selected');
+                }
             });
         }
 
-        // Validación de transferencia
+        // Function to simulate fetching stock data
+        async function fetchStock(warehouseId) {
+            // In a real application, this would be an AJAX call to your backend
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const warehouse = warehouses.find(w => w.id == warehouseId);
+                    resolve(warehouse ? warehouse.products : []);
+                }, 300); // Simulate network delay
+            });
+        }
+
+        // Update dynamic stock availability when origin changes
+        document.getElementById('almacen-origen').addEventListener('change', updateStockDisponible);
+
+        async function updateStockDisponible() {
+            const origenId = document.getElementById('almacen-origen').value;
+            const productItems = document.querySelectorAll('.product-transfer-item');
+
+            if (!origenId) {
+                productItems.forEach(item => {
+                    item.querySelector('.available-stock').textContent = 'N/A';
+                    item.querySelector('.validation-icon').className = 'validation-icon';
+                });
+                return;
+            }
+
+            const productsInOrigin = await fetchStock(origenId);
+
+            productItems.forEach(item => {
+                const productId = parseInt(item.dataset.productId);
+                const stockInfo = productsInOrigin.find(p => p.id === productId);
+                const availableStockSpan = item.querySelector('.available-stock');
+                const validationIcon = item.querySelector('.validation-icon');
+                const quantityInput = item.querySelector('.quantity-input');
+
+                let stock = 0;
+                if (stockInfo) {
+                    stock = stockInfo.stock;
+                    availableStockSpan.textContent = stock;
+                    validationIcon.classList.toggle('valid', stock > 0);
+                    validationIcon.classList.toggle('invalid', stock <= 0);
+                } else {
+                    availableStockSpan.textContent = '0';
+                    validationIcon.classList.add('invalid');
+                    validationIcon.classList.remove('valid');
+                }
+                quantityInput.max = stock; // Update max attribute for input
+                validateQuantity(quantityInput); // Validate current quantity
+            });
+        }
+
+        // Validate individual product quantity
+        function validateQuantity(inputElement) {
+            const requested = parseInt(inputElement.value);
+            const available = parseInt(inputElement.max); // Max is set to available stock
+            const validationIcon = inputElement.closest('.product-transfer-item').querySelector('.validation-icon');
+            const availableStockSpan = inputElement.closest('.product-transfer-item').querySelector('.available-stock');
+
+            if (requested > available) {
+                inputElement.classList.add('error');
+                validationIcon.classList.remove('valid');
+                validationIcon.classList.add('invalid');
+                availableStockSpan.textContent = `${available} (Exceso)`; // Indicate issue
+            } else {
+                inputElement.classList.remove('error');
+                validationIcon.classList.remove('invalid');
+                validationIcon.classList.add('valid');
+                availableStockSpan.textContent = available; // Reset text
+            }
+        }
+
+        // Event listener for quantity input changes
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('input', (event) => validateQuantity(event.target));
+        });
+
+
+        // Add product functionality (simplified for demo)
+        let nextProductId = 4;
+        function addProduct() {
+            const productList = document.querySelector('.transfer-products');
+            const newItem = document.createElement('div');
+            newItem.classList.add('product-transfer-item');
+            newItem.dataset.productId = nextProductId++; // Assign a unique ID for new product
+
+            newItem.innerHTML = `
+                <div class="product-info">
+                    <span>Nuevo Producto ${newItem.dataset.productId}</span>
+                    <div class="stock-validation">
+                        <div class="validation-icon invalid"></div>
+                        <span>Disponible: <span class="available-stock">0</span></span>
+                    </div>
+                </div>
+                <input type="number" class="form-input quantity-input" value="1" min="1">
+                <div class="transfer-actions">
+                    <button class="btn-remove">❌</button>
+                </div>
+            `;
+            productList.insertBefore(newItem, productList.lastElementChild); // Insert before "Añadir Producto" button
+            newItem.querySelector('.btn-remove').addEventListener('click', (event) => event.target.closest('.product-transfer-item').remove());
+            newItem.querySelector('.quantity-input').addEventListener('input', (event) => validateQuantity(event.target));
+            updateStockDisponible(); // Update stock for newly added product
+        }
+
+        // Remove product functionality
+        document.querySelectorAll('.btn-remove').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.target.closest('.product-transfer-item').remove();
+            });
+        });
+
+        // Overall transfer validation
         function validateTransfer() {
             let isValid = true;
-            
+            const origin = document.getElementById('almacen-origen').value;
+            const destination = document.getElementById('almacen-destino').value;
+
+            if (!origin || !destination) {
+                alert('Por favor, selecciona almacenes de origen y destino.');
+                return false;
+            }
+            if (origin === destination) {
+                alert('El almacén de origen y destino no pueden ser el mismo.');
+                return false;
+            }
+
             document.querySelectorAll('.product-transfer-item').forEach(item => {
-                const max = parseInt(item.querySelector('.stock-validation span').textContent.split(': ')[1]);
-                const input = item.querySelector('input');
-                
-                if (input.value > max) {
-                    input.style.borderColor = '#dc3545';
+                const input = item.querySelector('.quantity-input');
+                if (input.classList.contains('error') || parseInt(input.value) <= 0) {
                     isValid = false;
                 }
             });
-            
+
             return isValid;
         }
 
-        // Sistema de aprobaciones
+        // Simulate initiating transfer
         async function initiateTransfer() {
             if (!validateTransfer()) {
-                showError('Existen cantidades mayores al stock disponible');
+                alert('Por favor, corrige los errores en las cantidades o selecciona almacenes válidos.');
                 return;
             }
-            
+
             const transferData = {
                 origen: document.getElementById('almacen-origen').value,
                 destino: document.getElementById('almacen-destino').value,
                 productos: Array.from(document.querySelectorAll('.product-transfer-item')).map(item => ({
-                    producto_id: item.dataset.productId,
-                    cantidad: item.querySelector('input').value
+                    productId: item.dataset.productId,
+                    quantity: parseInt(item.querySelector('.quantity-input').value)
                 }))
             };
-            
-            const response = await fetch('/transferencias', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(transferData)
-            });
-            
-            if (response.ok) {
-                showSuccess('Transferencia iniciada, esperando aprobación');
-                updateTimeline();
-            }
+
+            console.log('Initiating Transfer:', transferData);
+            // In a real application, you would send this to your backend via fetch/axios
+            // const response = await fetch('/api/transferencias', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(transferData)
+            // });
+
+            // if (response.ok) {
+            //     alert('Transferencia iniciada con éxito, esperando aprobación.');
+            //     currentStep = 1; // Reset or update based on actual response
+            //     updateTimeline(currentStep);
+            // } else {
+            //     alert('Error al iniciar la transferencia.');
+            // }
+
+            alert('Transferencia simulada iniciada, esperando aprobación.');
+            currentStep = 1; // Assuming initial step is creation
+            updateTimeline(currentStep + 1); // Move to next step for demo
         }
 
-        // Control del timeline
-        function updateTimeline() {
-            // Lógica para actualizar estado
+        // Update timeline status
+        function updateTimeline(stepIndex) {
             const steps = document.querySelectorAll('.timeline-step');
             steps.forEach((step, index) => {
-                if (index <= currentStep) {
+                step.classList.remove('completed', 'current');
+                if (index < stepIndex) {
                     step.classList.add('completed');
+                } else if (index === stepIndex) {
+                    step.classList.add('current');
                 }
             });
         }
+        // Initial timeline update
+        updateTimeline(currentStep);
+
     </script>
 </body>
 </html>

@@ -83,7 +83,7 @@
       if (res.ok) {
         // Guardar en localStorage o sessionStorage si deseas
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
-        window.location.href = "/menu";  // Redirige al menú principal
+        window.location.href = "/index";  // Redirige al menú principal
       } else {
         document.getElementById("errorMsg").textContent = data.error || "Error al iniciar sesión";
       }
