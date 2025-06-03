@@ -4,323 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sistema de Gestión Hospitalaria</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #007bff; /* Example: blue */
-            --secondary-color: #6c757d; /* Example: gray */
-            --danger-color: #dc3545; /* Red for logout */
-            --background-light: #f8f9fa;
-            --text-dark: #343a40;
-            --border-light: #dee2e6;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            width: 70px; /* Collapsed state for mobile */
-            background-color: var(--primary-color);
-            color: white;
-            padding: 15px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: width 0.3s ease;
-            position: fixed;
-            height: 100%;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .sidebar.expanded {
-            width: 250px; /* Expanded state for desktop */
-        }
-
-        .sidebar-icon {
-            padding: 15px;
-            cursor: pointer;
-            width: 100%;
-            text-align: center;
-            font-size: 1.5rem;
-            position: relative;
-        }
-
-        .sidebar-icon:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .sidebar-icon .tooltip {
-            visibility: hidden;
-            width: 120px;
-            background-color: var(--text-dark);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 1;
-            left: 80px; /* Position to the right of the icon */
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .sidebar.expanded .sidebar-icon .tooltip {
-            display: none; /* Hide tooltips when sidebar is expanded */
-        }
-
-        .sidebar-icon:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Main content styles */
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            margin-left: 70px; /* Compensate for collapsed sidebar */
-            transition: margin-left 0.3s ease;
-        }
-
-        .main-content.sidebar-expanded {
-            margin-left: 250px; /* Compensate for expanded sidebar */
-        }
-
-        /* Header styles */
-        .header {
-            display: flex;
-            flex-wrap: wrap; /* Allow wrapping on small screens */
-            justify-content: space-between;
-            align-items: center;
-            background-color: #fff;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            width: 100%; /* Full width on mobile */
-            margin-bottom: 10px; /* Space between search and user on mobile */
-        }
-
-        .hamburger {
-            font-size: 1.8rem;
-            cursor: pointer;
-            margin-right: 15px;
-            display: block; /* Always visible to toggle sidebar */
-            color: var(--text-dark);
-        }
-
-        .search-input {
-            flex-grow: 1;
-            padding: 8px 12px;
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
-            margin-right: 10px;
-            font-size: 1rem;
-        }
-
-        .search-button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .search-button:hover {
-            opacity: 0.9;
-        }
-
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            width: 100%; /* Full width on mobile */
-            justify-content: flex-end; /* Align to the right */
-        }
-
-        .settings-icon,
-        .notification-icon {
-            font-size: 1.5rem;
-            color: var(--secondary-color);
-            cursor: pointer;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
-        }
-
-        #nombreUsuario {
-            font-weight: bold;
-            color: var(--text-dark);
-        }
-
-        .logout-button {
-            background-color: transparent;
-            color: var(--danger-color);
-            border: 1px solid var(--danger-color);
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            white-space: nowrap; /* Prevent text wrapping */
-        }
-
-        .logout-button:hover {
-            background-color: var(--danger-color);
-            color: white;
-        }
-
-        /* Title and buttons section */
-        .title-section {
-            margin-bottom: 20px;
-        }
-
-        .main-title {
-            font-size: 1.8rem;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-        }
-
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .module-button {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            flex: 1 1 auto; /* Allow buttons to grow and shrink */
-            min-width: 120px; /* Minimum width for buttons */
-        }
-
-        .module-button:hover {
-            background-color: #5a6268;
-        }
-
-        /* Card container (example) */
-        .card-container {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Banner styles */
-        .banner {
-            width: 100%;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .banner-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Image from prompt (placed as content, not background) */
-        .image-container {
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
-
-
-        /* Responsive adjustments */
-        @media (min-width: 768px) {
-            .sidebar {
-                width: 250px; /* Sidebar expanded by default on larger screens */
-            }
-
-            .main-content {
-                margin-left: 250px; /* Adjust main content margin for expanded sidebar */
-            }
-
-            .hamburger {
-                display: none; /* Hide hamburger on larger screens if sidebar is always visible */
-            }
-
-            .header {
-                flex-wrap: nowrap; /* Prevent wrapping for header elements */
-            }
-
-            .search-bar {
-                width: auto;
-                margin-bottom: 0;
-            }
-
-            .user-section {
-                width: auto;
-            }
-
-            .main-title {
-                font-size: 2.2rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-icon" data-tooltip="Ayuda y Soporte">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
         </div>
-        <a href="index" class="sidebar-icon" data-tooltip="Inicio">
+        <a href="index.html" class="sidebar-icon" data-tooltip="Inicio">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         </a>
-        <a href="gestion_stocks" class="sidebar-icon" data-tooltip="Gestión de Stocks">
+        <a href="gestion_stocks.html" class="sidebar-icon" data-tooltip="Gestión de Stocks">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 3h18v8H3z"/><path d="M3 13h18v8H3z"/>
             </svg>
           </a>
-          <a href="abastecimiento_central" class="sidebar-icon" data-tooltip="Abastecimiento por Almacén Central">
+          <a href="abastecimiento_central.html" class="sidebar-icon" data-tooltip="Abastecimiento por Almacén Central">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 9l9-6 9 6v11H3z"/><path d="M9 22V12h6v10"/>
             </svg>
           </a>
-          <a href="abastecimiento_transferencia_cas" class="sidebar-icon" data-tooltip="Abastecimiento por Transferencia entre CAS">
+          <a href="abastecimiento_transferencia_cas.html" class="sidebar-icon" data-tooltip="Abastecimiento por Transferencia entre CAS">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="17 1 21 5 17 9"/>
               <path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
@@ -328,32 +33,32 @@
               <path d="M21 13v1a4 4 0 0 1-4 4H3"/>
             </svg>
           </a>
-          <a href="almacenamiento_productos" class="sidebar-icon" data-tooltip="Almacenamiento de Productos">
+          <a href="almacenamiento_productos.html" class="sidebar-icon" data-tooltip="Almacenamiento de Productos">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 16V8l-9-5-9 5v8l9 5 9-5z"/>
               <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
               <line x1="12" y1="22.08" x2="12" y2="12"/>
             </svg>
           </a>
-          <a href="gestion_estupefacientes" class="sidebar-icon" data-tooltip="Gestión de Estupefacientes">
+          <a href="gestion_estupefacientes.html" class="sidebar-icon" data-tooltip="Gestión de Estupefacientes">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="10" width="20" height="4" rx="2"/>
               <line x1="12" y1="2" x2="12" y2="22"/>
             </svg>
           </a>
-          <a href="control_stocks" class="sidebar-icon" data-tooltip="Control de Stocks">
+          <a href="control_stocks.html" class="sidebar-icon" data-tooltip="Control de Stocks">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 11l3 3L22 4"/>
               <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/>
             </svg>
           </a>
-          <a href="manejo_productos_inmovilizados_vencidos" class="sidebar-icon" data-tooltip="Manejo de Productos Inmovilizados/Vencidos">
+          <a href="manejo_productos_inmovilizados_vencidos.html" class="sidebar-icon" data-tooltip="Manejo de Productos Inmovilizados/Vencidos">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <polyline points="12 6 12 12 16 14"/>
             </svg>
           </a>
-          <a href="control_temperatura_humedad" class="sidebar-icon" data-tooltip="Control de Temperatura y Humedad">
+          <a href="control_temperatura_humedad.html" class="sidebar-icon" data-tooltip="Control de Temperatura y Humedad">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="14" y1="2" x2="14" y2="8"/>
               <path d="M8 6h12a4 4 0 0 1 0 8h-1"/>
@@ -361,17 +66,19 @@
               <path d="M6 2a4 4 0 0 0 0 8"/>
             </svg>
           </a>
-          <a href="devolucion_almacen_especializado" class="sidebar-icon" data-tooltip="Devolución a Almacén Especializado">
+          <a href="devolucion_almacen_especializado.html" class="sidebar-icon" data-tooltip="Devolución a Almacén Especializado">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="9 11 4 16 9 21"/>
               <path d="M20 4v7a4 4 0 0 1-4 4H4"/>
             </svg>
           </a>
-      
+
     </div>
 
 
     <div class="main-content" id="mainContent">
+
+        
         <div class="header">
             <div class="search-bar">
                 <div class="hamburger" id="hamburger">|||</div>
@@ -379,9 +86,9 @@
                 <button class="search-button">Buscar</button>
             </div>
             <div class="user-section">
-                <i class="fas fa-cog settings-icon"></i>
-                <i class="fas fa-bell notification-icon"></i>
-                <img src="/static/img/user.jpeg" alt="User Avatar" class="user-avatar" />
+                <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <svg class="notification-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                 <img src="/static/img/user.jpeg" alt="User Avatar" class="user-avatar" />
                 <span id="nombreUsuario">Usuario</span>
                 <button class="logout-button" onclick="cerrarSesion()">Cerrar sesión</button>
             </div>
@@ -390,16 +97,13 @@
         <div class="title-section">
             <h1 class="main-title">Laboratorio, farmacia e inventarios</h1>
             <div class="button-container">
-                <button class="module-button">Laboratorio</button>
-                <button class="module-button">Farmacia</button>
-                <button class="module-button">Inventarios</button>
+                <a href="laboratorio" class="module-button">Laboratorio</a>
+                <a href="farmacia" class="module-button">Farmacia</a>
+                <a href="inventarios" class="module-button">Inventarios</a>
             </div>
         </div>
 
-        <div class="image-container">
-            <img src="image_eeb372.png" alt="Cute white puppy in grass">
-        </div>
-
+     
         <div class="card-container">
             <div class="card">
                 <h3>Resumen Laboratorio</h3>
