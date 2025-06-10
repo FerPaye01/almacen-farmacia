@@ -3,12 +3,7 @@ from flask import Blueprint, request, jsonify, render_template
 from datetime import datetime
 
 almacenamiento_bp = Blueprint('almacenamiento_bp', __name__)
-
-# La instancia de MySQL se inyectará aquí desde app.py
 mysql = None 
-
-# --- Rutas del Módulo de Almacenamiento ---
-
 
 
 @almacenamiento_bp.route('/abastecimiento_central')

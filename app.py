@@ -47,6 +47,8 @@ app = Flask(__name__)
 
 
 
+
+
 @app.route('/index')
 def index():
     return render_template('index.html')
@@ -66,6 +68,9 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/manejo_productos_inmovilizados_vencidos')
+def manejo_productos_inmovilizados_vencidos():
+    return render_template('manejo_productos_inmovilizados_vencidos.html')
 
 
 if __name__ == '__main__':
